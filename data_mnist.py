@@ -17,4 +17,3 @@ def load_data(filename: str, choice: str) -> tuple:
                 validation_images = data["validation_images"]
                 validation_labels = data["validation_labels"]
                 return validation_images, validation_labels
-
