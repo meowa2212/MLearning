@@ -1,5 +1,5 @@
 venv
 .DS_Store
-digits.pkl
+models
 gzip
 main.py

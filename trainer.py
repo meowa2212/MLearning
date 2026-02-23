@@ -1,5 +1,5 @@
 import numpy as np
-from data_emnist import load_data
+from data_emnist_classes import load_data
 from loss import Loss
 
 class Trainer():

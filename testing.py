@@ -1,25 +1,6 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-
-def plot_loss(loss_history: list) -> None:
-    plt.figure(figsize=(8, 5))
-    plt.plot(loss_history, marker='o', color='b', linestyle='-')
-    plt.title('Training Loss Over Epochs')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.grid(True)
-    plt.pause(5)
-    plt.close("all")
-
-def display(image: np.ndarray, title: np.ndarray) -> None:
-    reshaped = image.reshape(28,28)
-    plt.imshow(reshaped, cmap="gray")
-    plt.colorbar()
-    plt.axis("off")
-    plt.title(np.argmax(title))
-    plt.pause(3)
-    plt.close("all")
+from data_emnist_classes import display, get_label
 
 def run_realtime_prediction(network):
     canvas = np.zeros((400, 400), dtype="uint8")
@@ -78,7 +59,7 @@ def run_realtime_prediction(network):
 
         # 5. PREDICT
         output = network.forward_pass(model_input)
-        prediction = np.argmax(output)
+        prediction = get_label(output)
         confidence = np.max(output) * 100
 
         # UI Visuals
@@ -98,7 +79,7 @@ def run_realtime_prediction(network):
         if key == ord('q'): break
         elif key == ord('c'): canvas.fill(0)
         elif key == ord('d'):
-            print(np.resize(output, (1,10)))
-            display(model_input, output)
+            print(np.resize(output, (1,62)))
+            display(model_input, prediction)
 
     cv2.destroyAllWindows()

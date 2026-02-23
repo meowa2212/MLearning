@@ -1,6 +1,7 @@
 import gzip
 import numpy as np
 import os
+import matplotlib.pyplot as plt
 
 def load_data(directory: str, choice: str) -> tuple:
     file_map = {
@@ -43,6 +44,15 @@ def load_data(directory: str, choice: str) -> tuple:
     
     return images[indices], one_hot_labels[indices]
 
+
+def display(image: np.ndarray, title: np.ndarray) -> None:
+    reshaped = image.reshape(28,28)
+    plt.imshow(reshaped, cmap="gray")
+    plt.colorbar()
+    plt.axis("off")
+    plt.title(np.argmax(title))
+    plt.pause(3)
+    plt.close("all")
 # Verify the count
 # images, labels = load_data("gzip", "training")
 # print(f"Successfully loaded {images.shape[0]} images.") 
