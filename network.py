@@ -3,8 +3,8 @@ import pickle
 
 class Layer():
     def __init__(self, input_count: int, node_count: int, activation: str):
-        if activation not in ["ReLu", "tanh", "sigmoid", "leakyReLu", "softmax"]:
-            raise ValueError(f"chosen activation {activation} not known [ReLu, tanh, sigmoid, leakyReLu, softmax]")
+        if activation not in ["ReLu", "tanh", "sigmoid", "leakyReLu", "softmax", "Linear"]:
+            raise ValueError(f"chosen activation {activation} not known [ReLu, tanh, sigmoid, leakyReLu, softmax, Linear]")
         self.activation = activation
         if input_count <= 0:
             raise ValueError(f"chosen input count {input_count} is not allowed (int, >0)")
@@ -14,7 +14,7 @@ class Layer():
         self.node_count = node_count
 
         match self.activation:
-            case "ReLu" | "leakyReLu":
+            case "ReLu" | "leakyReLu" | "Linear":
                 self.weights = np.random.randn(node_count, input_count) * np.sqrt(2/input_count)
             case "sigmoid" | "tanh":
                 self.weights = np.random.randn(node_count, input_count) * np.sqrt(1/input_count)
@@ -46,7 +46,8 @@ class Layer():
             case "softmax":
                 exp_output = np.exp(self.last_output - np.max(self.last_output, axis=0, keepdims=True)) 
                 self.last_activated_output = exp_output / np.sum(exp_output, axis=0, keepdims=True)
-        
+            case "Linear":
+                self.last_activated_output = self.last_output
         return self.last_activated_output
     
     def backward(self, output_error: np.ndarray, learning_rate: float) -> np.ndarray:
@@ -62,6 +63,8 @@ class Layer():
                 d_relu[self.last_output <= 0] = 0.01
                 delta = output_error * d_relu
             case "softmax":
+                delta = output_error
+            case "Linear":
                 delta = output_error
             case _:
                 delta = output_error

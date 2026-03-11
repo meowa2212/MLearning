@@ -1,10 +1,10 @@
 import numpy as np
-from data_emnist_classes import load_data
 from loss import Loss
 
+
 class Trainer():
-    def fit(network: object, loss: str, data_filename: str, epochs: int, learning_rate: float, batch: int = 32) :
-        images, labels = load_data(data_filename, "training")
+    def fit(network: object, loss: str, data_tuple: tuple, epochs: int, learning_rate: float, batch: int = 32) :
+        images, labels = data_tuple
         
         num_samples = images.shape[0]
         input_dim = images.shape[1]
@@ -31,11 +31,9 @@ class Trainer():
                 
                 batch_loss = network.train(batch_x, batch_y, learning_rate, loss_tool)
                 total_loss += batch_loss
-            
-            print(f"Epoch {epoch + 1}/{epochs} - Loss: {total_loss / (num_samples / batch):.4f}")
 
-    def test(network: object, loss: str, data_filename: str):
-        images, labels = load_data(data_filename, "test")
+    def test(network: object, loss: str, data_tuple: tuple):
+        images, labels = data_tuple
 
         num_samples = images.shape[0]
         input_dim = images.shape[1]
@@ -58,5 +56,4 @@ class Trainer():
         truth = np.argmax(labels_ready, axis=0)
         accuracy = np.mean(predictions == truth)
 
-        print(f"Loss: {score:.4f}")
-        print(f"Accuracy: {accuracy * 100:.2f}%")
+        return score, accuracy
