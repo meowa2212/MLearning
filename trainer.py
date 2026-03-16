@@ -7,8 +7,14 @@ class Trainer():
         images, labels = data_tuple
         
         num_samples = images.shape[0]
-        input_dim = images.shape[1]
-        label_dim = labels.shape[1]
+        if len(images.shape) > 1:
+            input_dim = images.shape[1]
+        else:
+            input_dim = 1
+        if len(labels.shape) > 1:
+            label_dim = labels.shape[1]
+        else:
+            label_dim = 1
 
         images_ready = images.reshape(num_samples, input_dim).T
         labels_ready = labels.reshape(num_samples, label_dim).T
@@ -36,8 +42,14 @@ class Trainer():
         images, labels = data_tuple
 
         num_samples = images.shape[0]
-        input_dim = images.shape[1]
-        label_dim = labels.shape[1]
+        if len(images.shape) > 1:
+            input_dim = images.shape[1]
+        else:
+            input_dim = 1
+        if len(labels.shape) > 1:
+            label_dim = labels.shape[1]
+        else:
+            label_dim = 1
         
         images_ready = images.reshape(num_samples, input_dim).T
         labels_ready = labels.reshape(num_samples, label_dim).T
